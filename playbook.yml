@@ -1,3 +1,5 @@
 ---
-- name: playbook
-  hosts: all
+- hosts: localhost
+  roles:
+    - common
+    - webservers
