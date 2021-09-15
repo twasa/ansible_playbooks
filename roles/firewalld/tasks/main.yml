@@ -1,7 +1,7 @@
 ---
 - name: firewalld add IP white list
   firewalld:
-    rich_rule: rule family=ipv4 source address={{ IP }} port port={{ PORT }} protocol="tcp" accept
+    rich_rule: rule family=ipv4 source address={{ IP }} port port={{ PORT }} protocol=tcp accept
     permanent: yes
     state: enabled
   become: yes
