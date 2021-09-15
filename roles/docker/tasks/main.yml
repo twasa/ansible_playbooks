@@ -37,6 +37,6 @@
 - name: enable service docker
   systemd:
     name: docker
-    enable: yes
+    enabled: yes
     state: started
   become: yes
