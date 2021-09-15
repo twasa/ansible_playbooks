@@ -1,0 +1,43 @@
+---
+- name: Install docker
+  tasks:
+    - name: Uninstall old versions
+      yum:
+        name: "{{ item }}"
+        state: removed
+      with_items:
+        - docker
+        - docker-client
+        - docker-client-latest
+        - docker-common
+        - docker-latest
+        - docker-latest-logrotate
+        - docker-logrotate
+        - docker-engine
+      become: yes
+
+    - name: Install yum utils
+      yum:
+        name: yum-utils
+        state: latest
+      become: yes
+
+    - name: Add Docker repo
+      yum_repository:
+         description: repo for docker
+         name: docker-ce
+         baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+         gpgcheck: no
+    
+    - name: Install Docker
+      package:
+        name: docker-ce
+        state: latest
+      become: yes
+
+    - name: enable service docker
+      systemd:
+        name: docker
+        enable: yes
+        state: started
+      become: yes
