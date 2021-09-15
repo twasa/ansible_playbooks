@@ -1,5 +1,3 @@
 ---
-- hosts: localhost
-  roles:
-    - common
-    - webservers
+- import_playbook: webservers.yml
+- import_playbook: dbservers.yml
