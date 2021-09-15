@@ -4,3 +4,4 @@
     rich_rule: rule family=ipv4 source address={{ IP }} port port={{ PORT }} protocol="tcp" accept
     permanent: yes
     state: enabled
+  become: yes
