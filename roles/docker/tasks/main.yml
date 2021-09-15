@@ -26,6 +26,7 @@
       name: docker-ce
       baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
       gpgcheck: no
+  become: yes
 
 - name: Install Docker
   package:
