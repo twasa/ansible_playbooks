@@ -1,8 +1,9 @@
 ---
 - name: firewalld allow IP family with port
   firewalld:
-    rich_rule: rule family={{ IP_FAMLIY }} source address={{ IP }} port port={{ PORT }} protocol={{ PROTOCOL }} accept
+    rich_rule: rule family={{ IP_FAMLIY }} source address={{ item }} port port={{ PORT }} protocol={{ PROTOCOL }} accept
     permanent: yes
     immediate: yes
     state: "{{ STATE }}"
+  loop: "{{ IPs }}"
   become: yes
