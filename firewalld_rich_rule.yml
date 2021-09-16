@@ -2,5 +2,5 @@
 - hosts: all
   gather_facts: no
   roles:
-    - firewalld_remove_rule
+    - firewalld_rich_rule
     - firewall_cmds

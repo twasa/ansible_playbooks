@@ -1,8 +1,0 @@
----
-- name: firewalld allow IPv4 with TCP port
-  firewalld:
-    rich_rule: rule family=ipv4 source address={{ IP }} port port={{ PORT }} protocol=tcp accept
-    permanent: yes
-    immediate: yes
-    state: enabled
-  become: yes

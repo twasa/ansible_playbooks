@@ -1,6 +1,0 @@
----
-- hosts: all
-  gather_facts: no
-  roles:
-    - firewalld_add_rule
-    - firewall_cmds
