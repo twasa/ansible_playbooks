@@ -1,0 +1,8 @@
+---
+- name: show iptables result
+  shell: iptables -t filter -L IN_public_allow -n
+  become: yes
+
+- name: List everything added for or enabled in a zone
+  shell: firewall-cmd --list-all
+  become: yes
