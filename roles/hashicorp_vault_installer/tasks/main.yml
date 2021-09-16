@@ -1,0 +1,19 @@
+- name: Install yum utils
+  yum:
+    name: yum-utils
+    state: latest
+  become: yes
+
+- name: Add Hashicorp repo
+  yum_repository:
+      description: repo for Hashicorp
+      name: hashicorp
+      baseurl: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+      gpgcheck: no
+  become: yes
+
+- name: Install Hashicorp vault
+  package:
+    name: vault
+    state: present
+  become: yes

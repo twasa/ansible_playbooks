@@ -31,7 +31,7 @@
 - name: Install Docker
   package:
     name: docker-ce
-    state: latest
+    state: present
   become: yes
 
 - name: enable service docker
