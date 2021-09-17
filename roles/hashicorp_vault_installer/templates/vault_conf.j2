@@ -18,3 +18,7 @@ listener "tcp" {
   tls_cert_file = "{{ vault_tls_cert_file }}"
   tls_key_file = "{{ vault_tls_key_file }}"
 }
+
+ui = true
+api_addr = "https://0.0.0.0:8200"
+cluster_addr = "https://0.0.0.0:8201"
