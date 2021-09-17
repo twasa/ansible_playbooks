@@ -1,3 +1,4 @@
+vault_install_dir: /opt/vault/
 vault_install_prerequisites:
   - libselinux-python
   - git
