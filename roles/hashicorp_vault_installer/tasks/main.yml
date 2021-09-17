@@ -67,11 +67,12 @@
 
 - name: create vault relation directories
   file: 
-    path: "{{ vault_install_dir }}/ssl/"
+    path: "{{ item }}"
     state: directory
-    mode: '0755'
+    mode: '0750'
     owner: "{{ vault_user }}"
-  loop: "{{ vault_relation_dirs }}}"
+    group: "{{ vault_group }}"
+  loop: "{{ vault_relation_dirs }}"
   become: yes
 
 - name: Generate a Self Signed OpenSSL certificate
