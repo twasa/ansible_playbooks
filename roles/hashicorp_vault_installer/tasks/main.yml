@@ -62,6 +62,7 @@
     path: "{{ vault_install_dir }}"
     state: directory
     mode: '0755'
+  become: yes
 
 - name: config file
   template:
