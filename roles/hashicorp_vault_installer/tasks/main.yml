@@ -39,12 +39,14 @@
     owner: "{{ vault_user }}"
     group: "{{ vault_group }}"
     mode: 0755
+  become: yes
 
 - name: Set vault binary capabilities
   capabilities:
     path: /usr/local/bin/vault
     capability: cap_ipc_lock+ep
     state: present
+  become: yes
 
 - name: Copy systemd init file
   template:
@@ -53,6 +55,7 @@
     owner: root
     group: root
   notify: systemd_reload
+  become: yes
 
 - name: config file
   template:
@@ -60,24 +63,28 @@
     dest: /etc/vault/config.hcl
     owner: "{{ vault_user }}"
     group: "{{ vault_group }}"
-    
+  become: yes
+
 - name: vault service
   systemd:
     name: vault
     state: started
     enabled: yes
+  become: yes
 
 - name: Create unseal directories
   file:
     path: "{{ unseal_keys_dir_output }}"
     state: directory
   delegate_to: localhost
+  become: yes
 
 - name: Create root key directories
   file:
     path: "{{ root_token_dir_output }}"
     state: directory
   delegate_to: localhost
+  become: yes
 
 - name: Initialise Vault operator
   shell: vault operator init -key-shares=5 -key-threshold=3 -format json
@@ -95,18 +102,21 @@
     content: "{{ item.1 }}"
   with_indexed_items: "{{ vault_init_parsed.unseal_keys_hex }}"
   delegate_to: localhost
+  become: yes
 
 - name: Write root token to file
   copy:
     content: "{{ vault_init_parsed.root_token }}"
     dest: "{{root_token_dir_output}}/rootkey"
   delegate_to: localhost
+  become: yes
 
 - name: Reading unseal key contents
   command: cat {{item}}
   register: unseal_keys
   with_fileglob: "{{ unseal_keys_dir_output }}/*"
   delegate_to: localhost
+  become: yes
 
 - name: Unseal vault with unseal keys
   shell: |
@@ -114,3 +124,4 @@
   environment:
     VAULT_ADDR: "https://127.0.0.1:8200"
   loop: "{{unseal_keys.results}}"
+  become: yes
