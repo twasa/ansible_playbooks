@@ -1,19 +1,102 @@
-- name: Install yum utils
+- name: Install prerequisites
   yum:
-    name: yum-utils
-    state: latest
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+  with_items: "{{ vault_install_prerequisites }}"
   become: yes
 
-- name: Add Hashicorp repo
-  yum_repository:
-      description: repo for Hashicorp
-      name: hashicorp
-      baseurl: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-      gpgcheck: no
+- name: create vault group
+  group:
+    name: "vault"
   become: yes
 
-- name: Install Hashicorp vault
-  package:
-    name: vault
+- name: create vault account
+  user:
+    name: "vault"
+    group: "vault"
+    shell: "/sbin/nologin"
+    create_home: "no"
     state: present
   become: yes
+
+- name: download vault binary
+  get_url:
+    url: https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip
+    dest: /tmp/vault_{{ vault_version }}_linux_amd64.zip
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: 0755
+    checksum: "{{ vault_checksum }}"
+  register: vault_download
+
+- name: "Unzip vault archive"
+  unarchive:
+    src: "{{ vault_download.dest }}"
+    dest: /usr/local/bin/
+    copy: no
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    mode: 0755
+
+- name: Set vault binary capabilities
+  capabilities:
+    path: /usr/local/bin/vault
+    capability: cap_ipc_lock+ep
+    state: present
+
+- name: Copy systemd init file
+  template:
+    src: vault_systemd.j2
+    dest: /etc/systemd/system/vault.service
+    owner: root
+    group: root
+  notify: systemd_reload
+
+- name: config file
+  template:
+    src: vault_conf.j2
+    dest: /etc/vault/config.hcl
+    owner: "{{ vault_user }}"
+    group: "{{ vault_group }}"
+    
+- name: vault service
+  systemd:
+    name: vault
+    state: started
+    enabled: yes
+
+- name: Create unseal directories
+  file:
+    path: "{{ unseal_keys_dir_output }}"
+    state: directory
+  delegate_to: localhost
+
+- name: Create root key directories
+  file:
+    path: "{{ root_token_dir_output }}"
+    state: directory
+  delegate_to: localhost
+
+- name: Initialise Vault operator
+  shell: vault operator init -key-shares=5 -key-threshold=3 -format json
+  environment:
+    VAULT_ADDR: "https://127.0.0.1:8200"
+  register: vault_init_results
+
+- name: Parse output of vault init
+  set_fact:
+    vault_init_parsed: "{{ vault_init_results.stdout | from_json }}"
+
+- name: Write unseal keys to files
+  copy:
+    dest: "{{ unseal_keys_dir_output }}/unseal_key_{{ item.0 }}"
+    content: "{{ item.1 }}"
+  with_indexed_items: "{{ vault_init_parsed.unseal_keys_hex }}"
+  delegate_to: localhost
+
+- name: Write root token to file
+  copy:
+    content: "{{ vault_init_parsed.root_token }}"
+    dest: "{{root_token_dir_output}}/rootkey"
+  delegate_to: localhost

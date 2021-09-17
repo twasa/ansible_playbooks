@@ -1,0 +1,16 @@
+vault_install_prerequisites:
+  - libselinux-python
+  - git
+  - unzip
+vault_version: 1.8.2
+vault_user: vault
+vault_group: vault
+vault_checksum: d74724d6cc22bf1e1c7c519009b0176809acf6f1c20ee56107de0cab54cd8463
+vault_storage_type: file
+vault_access_key: ''
+vault_secret_key: ''
+vault_bucket: ''
+vault_tls_cert_file: /opt/vault/ssl/cert.pem
+vault_tls_key_file: /opt/vault/ssl/key.pem
+unseal_keys_dir_output: /opt/vault/unseal_keys/
+root_token_dir_output: /opt/vault/tokens/

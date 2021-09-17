@@ -1,0 +1,20 @@
+{% if vault_storage_type == "file" %}
+storage "file" {
+  path = "/opt/vault/storage.db"
+}
+{% endif %}
+
+{% if vault_storage_type == "s3" %}
+storage "s3" {
+  access_key = "{{ vault_access_key }}"
+  secret_key = "{{ vault_secret_key }}"
+  bucket     = "{{ vault_bucket }}"
+}
+{% endif %}
+
+listener "tcp" {
+  address = "0.0.0.0:8200"
+  tls_disable = 0
+  tls_cert_file = "{{ vault_tls_cert_file }}"
+  tls_key_file = "{{ vault_tls_key_file }}"
+}
