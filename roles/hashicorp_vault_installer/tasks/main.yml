@@ -29,6 +29,7 @@
     mode: 0755
     checksum: "{{ vault_checksum }}"
   register: vault_download
+  become: yes
 
 - name: "Unzip vault archive"
   unarchive:
