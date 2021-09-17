@@ -60,7 +60,7 @@
 - name: config file
   template:
     src: vault_conf.j2
-    dest: /etc/vault/config.hcl
+    dest: /opt/vault/config.hcl
     owner: "{{ vault_user }}"
     group: "{{ vault_group }}"
   become: yes
