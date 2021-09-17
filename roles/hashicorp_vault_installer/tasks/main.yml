@@ -75,13 +75,13 @@
   loop: "{{ vault_relation_dirs }}"
   become: yes
 
-- name: Generate a Self Signed OpenSSL certificate
-  openssl_certificate:
-    path: "{{ vault_install_dir }}/ssl/cert.pem"
-    privatekey_path: "{{ vault_install_dir }}/ssl/key.pem"
-    csr_path: "{{ vault_install_dir }}/ssl/csr.csr"
-    provider: selfsigned
-  become: yes
+# - name: Generate a Self Signed OpenSSL certificate
+#   openssl_certificate:
+#     path: "{{ vault_install_dir }}/ssl/cert.pem"
+#     privatekey_path: "{{ vault_install_dir }}/ssl/key.pem"
+#     csr_path: "{{ vault_install_dir }}/ssl/csr.csr"
+#     provider: selfsigned
+#   become: yes
 
 - name: config file
   template:
