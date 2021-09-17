@@ -5,7 +5,7 @@ vault_install_prerequisites:
 vault_version: 1.8.2
 vault_user: vault
 vault_group: vault
-vault_checksum: d74724d6cc22bf1e1c7c519009b0176809acf6f1c20ee56107de0cab54cd8463
+vault_checksum: sha256:d74724d6cc22bf1e1c7c519009b0176809acf6f1c20ee56107de0cab54cd8463
 vault_storage_type: file
 vault_access_key: ''
 vault_secret_key: ''
