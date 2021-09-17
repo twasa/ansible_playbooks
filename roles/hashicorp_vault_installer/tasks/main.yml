@@ -85,7 +85,7 @@
 - name: config file
   template:
     src: vault_conf.j2
-    dest: "{{ vault_install_dir }}config.hcl"
+    dest: "{{ vault_install_dir }}/config.hcl"
     owner: "{{ vault_user }}"
     group: "{{ vault_group }}"
   become: yes
