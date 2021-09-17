@@ -59,9 +59,27 @@
 
 - name: create install directories
   file: 
-    path: "{{ vault_install_dir }}"
+    path: "{{ vault_install_dir }}/ssl/"
     state: directory
     mode: '0755'
+    owner: "{{ vault_user }}"
+  become: yes
+
+- name: create vault relation directories
+  file: 
+    path: "{{ vault_install_dir }}/ssl/"
+    state: directory
+    mode: '0755'
+    owner: "{{ vault_user }}"
+  loop: "{{ vault_relation_dirs }}}"
+  become: yes
+
+- name: Generate a Self Signed OpenSSL certificate
+  openssl_certificate:
+    path: "{{ vault_install_dir }}/ssl/cert.pem"
+    privatekey_path: "{{ vault_install_dir }}/ssl/key.pem"
+    csr_path: "{{ vault_install_dir }}/ssl/csr.csr"
+    provider: selfsigned
   become: yes
 
 - name: config file

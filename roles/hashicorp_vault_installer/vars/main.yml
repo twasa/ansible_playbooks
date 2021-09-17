@@ -1,4 +1,7 @@
-vault_install_dir: /opt/vault/
+vault_install_dirs: /opt/vault/
+vault_relation_dirs:
+  - /opt/vault/unseal_keys/
+  - /opt/vault/tokens/
 vault_install_prerequisites:
   - libselinux-python
   - git
