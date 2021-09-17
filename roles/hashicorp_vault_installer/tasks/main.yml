@@ -3,7 +3,7 @@
     name: "{{ item }}"
     update_cache: yes
     state: present
-  with_items: "{{ vault_install_prerequisites }}"
+  loop: "{{ vault_install_prerequisites }}"
   become: yes
 
 - name: create vault group
@@ -100,3 +100,16 @@
     content: "{{ vault_init_parsed.root_token }}"
     dest: "{{root_token_dir_output}}/rootkey"
   delegate_to: localhost
+
+- name: Reading unseal key contents
+  command: cat {{item}}
+  register: unseal_keys
+  with_fileglob: "{{ unseal_keys_dir_output }}/*"
+  delegate_to: localhost
+
+- name: Unseal vault with unseal keys
+  shell: |
+    vault operator unseal {{ item.stdout }}
+  environment:
+    VAULT_ADDR: "https://127.0.0.1:8200"
+  loop: "{{unseal_keys.results}}"
