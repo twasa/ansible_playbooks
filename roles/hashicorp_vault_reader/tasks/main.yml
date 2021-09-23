@@ -1,0 +1,17 @@
+---
+- name: get vault kv2 secret data
+  uri:
+    url: "{{ vault_scheme }}://{{ vault_host }}/v1{{ secret_engine_name }}/data{{ secret_path }}"
+    use_proxy: no
+    validate_certs: yes
+    headers:
+      X-Vault-Request: true
+      X-Vault-Token: "{{ vault_token }}"
+  register: vault_result
+
+- name: write vault_result content to file
+  copy:
+    content: "{{ vault_result | json_query(jquery) }}"
+    dest: "{{ dest_path }}"
+  vars:
+    jquery: "json.data.data.{{ key_name }}"
