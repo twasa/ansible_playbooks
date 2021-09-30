@@ -17,6 +17,12 @@
     mode: 0600
   become: yes
 
+- name: backup strongswan conf
+  copy:
+    remote_src: yes
+    src: /etc/strongswan/ipsec.conf
+    dest: /etc/strongswan/ipsec.conf.bak
+
 - name: reate symbolic link for strongswan conf
   file:
     src: /etc/ipsec.conf
