@@ -1,13 +1,60 @@
 ---
-- name: install L2TP client packages
-  yum:
-    name: {{ item }}
-    state: present
-  loop:
-    - epel-release
-    - strongswan
-    - xl2tpd
+- name: Configure strongSwan
+  template:
+    src: ipsec.conf.j2
+    dest: /etc/ipsec.conf
+    owner: root
+    group: root
+    mode: 0600
   become: yes
 
-- name: config L2TP client
-  
+- name: create secret file
+  template:
+    src: ipsec.secrets.j2
+    dest: /etc/ipsec.secrets
+    owner: root
+    group: root
+    mode: 0600
+  become: yes
+
+- name: reate symbolic link for strongswan conf
+  file:
+    src: /etc/ipsec.conf
+    dest: /etc/strongswan/ipsec.conf
+    state: link
+  become: yes
+
+- name: reate symbolic link for strongswan secret
+  file:
+    src: /etc/ipsec.secrets
+    dest: /etc/strongswan/ipsec.secrets
+    state: link
+  become: yes
+
+- name: create xl2tpd conf
+  template:
+    src: xl2tpd.conf.j2
+    dest: /etc/xl2tpd/xl2tpd.conf
+    owner: root
+    group: root
+    mode: 0600
+  become: yes
+
+- name: create xl2tpd client conf
+  template:
+    src: options.l2tpd.client.j2
+    dest: /etc/ppp/options.l2tpd.client
+    owner: root
+    group: root
+    mode: 0600
+  become: yes
+
+- name: Create xl2tpd control run dir
+  file:
+    path: /var/run/xl2tpd
+    state: directory
+
+- name: Create xl2tpd control file
+  file:
+    path: /var/run/xl2tpd/l2tp-control
+    state: touch
