@@ -1,7 +1,8 @@
 ---
 - name: get vault kv2 secret data
+
   uri:
-    url: "{{ vault_scheme }}://{{ vault_host }}/v1/{{ secret_engine_name }}/data/{{ secret_path }}"
+    url: "{{ vault_scheme | default('https') }}://{{ vault_host }}/v1/{{ secret_engine_name }}/data/{{ secret_path }}"
     use_proxy: no
     validate_certs: yes
     headers:

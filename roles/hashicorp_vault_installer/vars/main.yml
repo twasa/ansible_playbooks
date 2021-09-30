@@ -1,8 +1,8 @@
 vault_install_dir: /opt/vault
 vault_relation_dirs:
-  - /opt/vault/ssl
-  - /opt/vault/unseal_keys
-  - /opt/vault/tokens
+  - "{{ vault_install_dir}}/ssl"
+  - "{{ vault_install_dir}}/unseal_keys"
+  - "{{ vault_install_dir}}/tokens"
 vault_install_prerequisites:
   - libselinux-python
   - git
@@ -16,7 +16,7 @@ vault_storage_type: file
 vault_access_key: ''
 vault_secret_key: ''
 vault_bucket: ''
-vault_tls_cert_file: /opt/vault/ssl/cert.pem
-vault_tls_key_file: /opt/vault/ssl/key.pem
-unseal_keys_dir_output: /opt/vault/unseal_keys/
-root_token_dir_output: /opt/vault/tokens/
+vault_tls_cert_file: "{{ vault_install_dir}}/ssl/cert.pem"
+vault_tls_key_file: "{{ vault_install_dir}}/ssl/key.pem"
+unseal_keys_dir_output: "{{ vault_install_dir}}/unseal_keys/"
+root_token_dir_output: "{{ vault_install_dir}}/tokens/"
