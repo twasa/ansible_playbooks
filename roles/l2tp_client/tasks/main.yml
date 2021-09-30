@@ -1,0 +1,13 @@
+---
+- name: install L2TP client packages
+  yum:
+    name: {{ item }}
+    state: present
+  loop:
+    - epel-release
+    - strongswan
+    - xl2tpd
+  become: yes
+
+- name: config L2TP client
+  
