@@ -9,7 +9,7 @@
       X-Vault-Token: "{{ vault_token }}"
   register: vault_result
 
-- name: add vault result to dummy host
-  add_host:
-    name: "variable_holder"
-    result: "{{ vault_result }}"
+- name: add vault result to status
+  set_stats:
+    data: 
+      vault_result: "{{ vault_result }}"
