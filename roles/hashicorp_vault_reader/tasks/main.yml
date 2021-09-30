@@ -9,9 +9,7 @@
       X-Vault-Token: "{{ vault_token }}"
   register: vault_result
 
-- name: write vault_result content to file
-  copy:
-    content: "{{ vault_result | json_query(jquery) }}"
-    dest: "{{ dest_path }}"
-  vars:
-    jquery: "json.data.data.{{ key_name }}"
+- name: add vault result to dummy host
+  add_host:
+    name: "variable_holder"
+    result: "{{ vault_result }}"

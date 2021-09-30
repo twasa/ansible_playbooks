@@ -1,0 +1,6 @@
+- name: write vault_result content to file
+  copy:
+    content: "{{ hostvars['variable_holder']['vault_result'] | json_query(jquery) }}"
+    dest: "{{ dest_path }}"
+  vars:
+    jquery: "json.data.data.{{ key_name }}"
