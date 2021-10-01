@@ -1,6 +1,6 @@
 ---
 - name: Uninstall old versions
-  yum:
+  package:
     name: "{{ item }}"
     state: removed
   with_items:
@@ -15,7 +15,7 @@
   become: yes
 
 - name: Install yum utils
-  yum:
+  package:
     name: yum-utils
     state: latest
   become: yes

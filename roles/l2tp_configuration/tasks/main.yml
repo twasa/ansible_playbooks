@@ -34,14 +34,14 @@
     - ipsec.conf
     - ipsec.secrets
 
-- name: reate symbolic link for strongswan conf
+- name: create symbolic link for strongswan conf
   file:
     src: /etc/ipsec.conf
     dest: /etc/strongswan/ipsec.conf
     state: link
   become: yes
 
-- name: reate symbolic link for strongswan secret
+- name: create symbolic link for strongswan secret
   file:
     src: /etc/ipsec.secrets
     dest: /etc/strongswan/ipsec.secrets
@@ -70,8 +70,20 @@
   file:
     path: /var/run/xl2tpd
     state: directory
-
+  become: yes
 - name: Create xl2tpd control file
   file:
     path: /var/run/xl2tpd/l2tp-control
     state: touch
+  become: yes
+
+- name: relation service restart
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+  loop:
+    - strongswan
+    - xl2tpd
+  become: yes
