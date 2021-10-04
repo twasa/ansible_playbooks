@@ -26,7 +26,6 @@
   shell: ip route add {{ VPN_SUBNET }}/{{ VPN_MASK }} via {{ VPN_GATEWAY }}
   when: L2TP_STATUS == "enable"
   become: yes
-  ignore_errors: yes
 
 - name: stop the L2TP connection
   shell: echo "d {{ VPN_CONNECTION_NAME }}" | tee -a /var/run/xl2tpd/l2tp-control > /dev/null
