@@ -38,7 +38,7 @@
   shell: /usr/sbin/ip route del {{ VPN_SUBNET }}/{{ VPN_MASK }}
   when: L2TP_STATUS == "disable"
   become: yes
-  ignore_errors: true
+  ignore_errors: yes
 
 - name: show IP link and route information
   shell: |
