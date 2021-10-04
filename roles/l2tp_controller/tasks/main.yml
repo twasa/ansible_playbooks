@@ -35,14 +35,14 @@
   become: yes
 
 - name: delete route
-  shell: ip route del {{ VPN_SUBNET }}/{{ VPN_MASK }}
+  shell: /usr/sbin/ip route del {{ VPN_SUBNET }}/{{ VPN_MASK }}
   when: L2TP_STATUS == "disable"
   become: yes
 
 - name: show IP link and route information
   shell: |
-    ip link | grep ppp &&
-    ip route show
+    /usr/sbin/ip link | grep ppp;
+    /usr/sbin/ip route show
 
 - name: test L2TP connection
   shell: "ping -c 4 {{ VPN_GATEWAY }}"
