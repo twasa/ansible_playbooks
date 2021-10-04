@@ -19,7 +19,7 @@
   become: yes
 
 - name: add route
-  shell: ip route add {{ VPN_SUBNET }}/{{ VPN_MASK }} via {{ VPN_GATEWAY }} dev {{ VPN_DEV }}
+  shell: ip route add {{ VPN_SUBNET }}/{{ VPN_MASK }} via {{ VPN_GATEWAY }}
   when: L2TP_STATUS == "enable"
   become: yes
 
