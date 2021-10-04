@@ -42,7 +42,6 @@
 
 - name: show IP link and route information
   shell: |
-    /usr/sbin/ip link | grep ppp &&
     /usr/sbin/ip route show
 
 - name: test L2TP connection
