@@ -10,7 +10,7 @@
 
 - name: start the L2TP connection
   shell: |
-    strongswan up "{{ VPN_CONNECTION_NAME }}" &&
+    /usr/sbin/strongswan up "{{ VPN_CONNECTION_NAME }}" &&
     echo "c {{ VPN_CONNECTION_NAME }}" > /var/run/xl2tpd/l2tp-control &&
     ip route add {{ VPN_SUBNET }}/{{ VPN_MASK }} via {{ VPN_GATEWAY }} dev {{ VPN_DEV }}
   when:  L2TP_STATUS == "enable"
@@ -22,7 +22,7 @@
 - name: stop the L2TP connection
   shell: |
     echo "d {{ VPN_CONNECTION_NAME }}" > /var/run/xl2tpd/l2tp-control &&
-    strongswan down "{{ VPN_CONNECTION_NAME }}" &&
+    /usr/sbin/strongswan down "{{ VPN_CONNECTION_NAME }}" &&
     ip route del {{ VPN_SUBNET }}/{{ VPN_MASK }}
   when: L2TP_STATUS == "disable"
   become: yes
