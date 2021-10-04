@@ -1,5 +1,5 @@
 ---
-- name: Make sure relation service is running
+- name: make sure relation service is running
   systemd:
     state: started
     name: "{{ item }}"
@@ -8,21 +8,43 @@
     - xl2tpd
   become: yes
 
-- name: start the L2TP connection
-  shell: |
-    /usr/sbin/strongswan up "{{ VPN_CONNECTION_NAME }}"
-    echo "c {{ VPN_CONNECTION_NAME }}" > /var/run/xl2tpd/l2tp-control
-    ip route add {{ VPN_SUBNET }}/{{ VPN_MASK }} via {{ VPN_GATEWAY }} dev {{ VPN_DEV }}
-  when:  L2TP_STATUS == "enable"
+- name: start strongswan
+  shell: /usr/sbin/strongswan up "{{ VPN_CONNECTION_NAME }}"
+  when: L2TP_STATUS == "enable"
   become: yes
-  notify:
-    - test L2TP connection
-    - show IP link and route information
+
+- name: start ppp0
+  shell: echo "c {{ VPN_CONNECTION_NAME }}" > /var/run/xl2tpd/l2tp-control
+  when: L2TP_STATUS == "enable"
+  become: yes
+
+- name: add route
+  shell: ip route add {{ VPN_SUBNET }}/{{ VPN_MASK }} via {{ VPN_GATEWAY }} dev {{ VPN_DEV }}
+  when: L2TP_STATUS == "enable"
+  become: yes
 
 - name: stop the L2TP connection
-  shell: |
+  shell: 
     echo "d {{ VPN_CONNECTION_NAME }}" > /var/run/xl2tpd/l2tp-control
-    /usr/sbin/strongswan down "{{ VPN_CONNECTION_NAME }}"
-    ip route del {{ VPN_SUBNET }}/{{ VPN_MASK }}
   when: L2TP_STATUS == "disable"
   become: yes
+
+- name: stop strongswan
+  shell: /usr/sbin/strongswan down "{{ VPN_CONNECTION_NAME }}"
+  when: L2TP_STATUS == "disable"
+  become: yes
+
+- name: delete route
+  shell: ip route del {{ VPN_SUBNET }}/{{ VPN_MASK }}
+  when: L2TP_STATUS == "disable"
+  become: yes
+
+- name: show IP link and route information
+  shell: |
+    ip link | grep ppp &&
+    ip route show
+
+- name: test L2TP connection
+  shell: "ping -c 4 {{ VPN_GATEWAY }}"
+  ignore_errors: true
+  when: L2TP_STATUS == "enable"

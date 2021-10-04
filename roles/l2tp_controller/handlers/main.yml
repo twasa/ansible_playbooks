@@ -1,8 +1,0 @@
-- name: test L2TP connection
-  shell: "ping -c 4 {{ VPN_GATEWAY }}"
-  ignore_errors: true
-
-- name: show IP link and route information
-  shell: |
-    ip link | grep ppp &&
-    ip route show
