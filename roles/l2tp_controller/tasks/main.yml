@@ -18,6 +18,10 @@
   when: L2TP_STATUS == "enable"
   become: yes
 
+- name: Sleep for 9 seconds and continue with play
+  wait_for:
+    timeout: 9
+
 - name: add route
   shell: ip route add {{ VPN_SUBNET }}/{{ VPN_MASK }} via {{ VPN_GATEWAY }}
   when: L2TP_STATUS == "enable"
