@@ -1,9 +1,6 @@
 ---
 - hosts: all
   gather_facts: yes
-  tasks:
-  - name: install memcached from package
-    package:
-      name: memcached
-      state: present
-    when: ansible_distribution == "CentOS" or ansible_distribution=="RedHat"
+  roles:
+    - memcached_installer
+

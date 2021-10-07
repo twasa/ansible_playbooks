@@ -1,0 +1,12 @@
+/var/log/memcached/memcached.log {
+    daily
+    rotate 3
+    dateext
+    missingok
+    create 0640 root root
+    compress
+    delaycompress
+    postrotate
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

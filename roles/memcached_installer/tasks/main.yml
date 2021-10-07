@@ -1,0 +1,31 @@
+  - name: install memcached from package
+    package:
+      name: memcached
+      state: present
+    when: ansible_distribution == "CentOS" or ansible_distribution=="RedHat"
+    become: yes
+
+  - name: create memcached log directory
+    file:
+      name: /var/log/memcached
+      state: directory
+    become: yes
+
+  - name: config rsyslog for memcached log
+    template:
+      src: memcached.conf.j2
+      dest: /etc/rsyslog.d/memcached.conf
+    become: yes
+
+  - name: config logrotation for memcached log
+    template:
+      src: memcached.j2
+      dest: /etc/logrotate.d/memcached
+    become: yes
+
+  - name: enable memcached systemd
+    systemd:
+      name: memcached
+      state: started
+      daemon_reload: yes
+    become: yes
