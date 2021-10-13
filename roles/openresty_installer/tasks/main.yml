@@ -4,7 +4,7 @@
     dest: /etc/yum.repos.d/openresty.repo
   when: ansible_distribution == "CentOS" or ansible_distribution=="RedHat"
   owner: root
-  mode: 0640
+  mode: 0644
   become: yes
 
 - name: install openresty
