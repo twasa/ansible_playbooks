@@ -1,16 +1,19 @@
 - name: Add openresty repository
-  yum_repository:
-    name: openresty
-    description: openresty repo
-    baseurl: https://openresty.org/package/centos/openresty.repo
+  get_url:
+    url: https://openresty.org/package/centos/openresty.repo
+    dest: /etc/yum.repos.d/openresty.repo
   when: ansible_distribution == "CentOS" or ansible_distribution=="RedHat"
+  owner: root
+  mode: 0640
   become: yes
 
 - name: install openresty
-  package:
+  yum:
     name: "{{ item }}"
     state: present
+    update_cache: yes
   loop:
     - openresty
-    - openresty-resty
+    # - openresty-resty
+  when: ansible_distribution == "CentOS" or ansible_distribution=="RedHat"
   become: yes
