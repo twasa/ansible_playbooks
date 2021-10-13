@@ -1,3 +1,4 @@
+---
 - name: Add openresty repository
   get_url:
     url: https://openresty.org/package/centos/openresty.repo
