@@ -4,10 +4,8 @@ vault_relation_dirs:
   - "{{ vault_install_dir}}/unseal_keys"
   - "{{ vault_install_dir}}/tokens"
 vault_install_prerequisites:
-  - libselinux-python
   - git
   - unzip
-  - pyOpenSSL
 vault_version: 1.8.2
 vault_user: vault
 vault_group: vault
