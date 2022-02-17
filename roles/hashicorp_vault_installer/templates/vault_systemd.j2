@@ -15,6 +15,9 @@ Capabilities=CAP_IPC_LOCK+ep
 SecureBits=keep-caps
 NoNewPrivileges=yes
 KillSignal=SIGINT
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+PrivateUsers=false
 
 [Install]
 WantedBy=multi-user.target
