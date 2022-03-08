@@ -1,0 +1,12 @@
+---
+- name: get indices list
+  uri:
+    url: http://localhost:9200/_cat/indices?v&h=index'
+    method: GET
+    body_format: json
+    return_content: yes
+    timeout: 15
+  register: index_list_result
+- name: print indices list result
+  debug:
+    var: index_list_result
