@@ -1,7 +1,7 @@
 ---
 - name: get indices list
   uri:
-    url: http://localhost:9200/_cat/indices?v&h=index'
+    url: http://localhost:9200/_cat/indices?v&h=index
     method: GET
     return_content: yes
     timeout: 15
