@@ -9,8 +9,7 @@
 
 - name: print indices list result
   debug:
-    var: "{{ index_list_result | json_query(jquery) }}"
+    var: "{{ index_list_result | community.general.json_query(jquery) }}"
   when: index_list_result.status == 200
   vars:
     jquery: "content.*.index"
-
