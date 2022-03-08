@@ -5,9 +5,9 @@
     method: GET
     return_content: yes
     timeout: 15
-  register: "{{ index_list_result | json_query('*'.index)}}"
+  register: index_list_result
 
 - name: print indices list result
   debug:
-    var: index_list_result.content
+    var: "{{ index_list_result | json_query('*'.index)}}"
   when: index_list_result.status == 200
