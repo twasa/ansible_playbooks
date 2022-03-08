@@ -9,5 +9,5 @@
 
 - name: print indices list result
   debug:
-    var: "{{ index_list_result | json_query('*'.index)}}"
+    var: "{{ index_list_result.content | json_query('*'.index) }}"
   when: index_list_result.status == 200
