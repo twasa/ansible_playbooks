@@ -9,7 +9,7 @@
 
 - name: print indices list result
   debug: 
-    msg: "{{ index_list_result | json_query(jmesquery) }}"
+    msg: "{{ index_list_result }}"
   when: index_list_result.status == 200
   vars:
     jmesquery: "content.[*].index"
