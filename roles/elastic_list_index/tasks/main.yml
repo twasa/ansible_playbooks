@@ -8,8 +8,7 @@
   register: index_list_result
 
 - name: print indices list result
-  debug:
-    var: "{{ index_list_result | community.general.json_query(jquery) }}"
+  debug: msg="{{ index_list_result.json | json_query(jmesquery) }}"
   when: index_list_result.status == 200
   vars:
-    jquery: "content.*.index"
+    jmesquery: "content.[*].index"
