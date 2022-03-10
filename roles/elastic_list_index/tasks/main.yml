@@ -12,4 +12,4 @@
     msg: "{{ index_list_result | json_query(jmesquery) }}"
   when: index_list_result.status == 200
   vars:
-    jmesquery: "content.[*]"
+    jmesquery: "content"
