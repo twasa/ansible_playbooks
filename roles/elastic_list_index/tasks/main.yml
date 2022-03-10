@@ -1,7 +1,4 @@
 ---
-- name: choice one random es server
-  set_fact: random_host="{{ groups.all | random }}"
-
 - name: get indices list
   uri:
     url: http://localhost:9200/_cat/indices?h=index
@@ -9,7 +6,6 @@
     return_content: yes
     timeout: 15
   register: index_list_result
-  when: inventory_hostname == random_host
 
 - name: print indices list result
   debug: 
