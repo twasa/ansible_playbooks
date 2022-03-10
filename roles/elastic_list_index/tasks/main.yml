@@ -9,5 +9,5 @@
 
 - name: print indices list result
   debug: 
-    msg: "{{ index_list_result }}"
+    msg: "{{ index_list_result.content }}"
   when: index_list_result.status == 200
