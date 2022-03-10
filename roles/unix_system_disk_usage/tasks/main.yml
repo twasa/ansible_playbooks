@@ -1,9 +1,9 @@
-- name: get disks information
-  set_fact:
-    mount_all: "{{ mount_all + [{'host':ansible_host,'dev':item.device,'mount':item.mount,'free':(((item.size_available/1024)/1024)/1024)|round(2,'common'),'total':(((item.size_total/1024)/1024)/1024)|round(2,'common')}] }}"
-  when: (item.size_total - item.size_available) > (item.size_total|float * 0.50)
-  with_items: "{{ ansible_mounts | list }}"
-
-- name: show disks information
-  debug:
-      msg: "{{ mount_all }}"
+- name: Ensure that free space on the tested volume is greater than 65%
+  assert:
+    that:
+      - mount.size_available > mount.size_total|float * 0.65
+    msg: Disk space has reached 35% threshold
+  vars:
+    mount: "{{ ansible_mounts | selectattr('mount','equalto',item.mount) | list | first }}"
+  with_items:
+    - "{{ ansible_mounts }}"
