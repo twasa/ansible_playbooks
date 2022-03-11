@@ -1,8 +1,8 @@
 - name: Ensure that free space on the tested volume is greater than 65%
   debug: 
     msg: "{{ item }}"
-  # vars:
-  #   mount: "{{ ansible_mounts | selectattr('mount','equalto',item.mount) | list | first }}"
-  # when: mount.size_available > mount.size_total|float * 0.65
+  vars:
+    mount: "{{ ansible_mounts | selectattr('fstype','equalto','xfs') | list | first }}"
+  when: mount.size_available > mount.size_total|float * 0.65
   with_items:
     - "{{ ansible_mounts }}"
