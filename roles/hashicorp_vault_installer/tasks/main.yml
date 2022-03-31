@@ -1,5 +1,5 @@
 - name: Install prerequisites
-  yum:
+  package:
     name: "{{ item }}"
     update_cache: yes
     state: present
