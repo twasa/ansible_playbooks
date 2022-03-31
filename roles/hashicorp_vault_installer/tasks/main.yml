@@ -57,14 +57,6 @@
   notify: systemd_reload
   become: yes
 
-- name: create install directories
-  file: 
-    path: "{{ vault_install_dir }}/ssl/"
-    state: directory
-    mode: '0755'
-    owner: "{{ vault_user }}"
-  become: yes
-
 - name: create vault relation directories
   file: 
     path: "{{ item }}"
@@ -83,7 +75,7 @@
 #     provider: selfsigned
 #   become: yes
 
-- name: config file
+- name: create config file
   template:
     src: vault_conf.j2
     dest: "{{ vault_install_dir }}/config.hcl"
@@ -91,25 +83,11 @@
     group: "{{ vault_group }}"
   become: yes
 
-- name: vault service
+- name: vault service start
   systemd:
     name: vault
     state: started
     enabled: yes
-  become: yes
-
-- name: Create unseal directories
-  file:
-    path: "{{ unseal_keys_dir_output }}"
-    state: directory
-  delegate_to: localhost
-  become: yes
-
-- name: Create root key directories
-  file:
-    path: "{{ root_token_dir_output }}"
-    state: directory
-  delegate_to: localhost
   become: yes
 
 - name: Initialise Vault operator
