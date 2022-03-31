@@ -6,10 +6,10 @@ vault_relation_dirs:
 vault_install_prerequisites:
   - git
   - unzip
-vault_version: 1.8.2
+vault_version: 1.10.0
 vault_user: vault
 vault_group: vault
-vault_checksum: sha256:d74724d6cc22bf1e1c7c519009b0176809acf6f1c20ee56107de0cab54cd8463
+vault_checksum: sha256:ec06473d79e77c05700f051278c54b0f7b6f2df64f57f630a0690306323f1175
 vault_storage_type: file
 vault_access_key: ''
 vault_secret_key: ''
