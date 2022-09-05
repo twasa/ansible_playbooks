@@ -1,8 +1,6 @@
-- name: Ensure that free space on the tested volume is greater than {{ volume_usage | default(65)%}}
-  debug: 
-    msg: "volume: {{ mount.mount }} usage greater than {{ volume_usage | default(65)%}}"
-  vars:
-    mount: "{{ ansible_mounts | selectattr('fstype','equalto','xfs') | list | first }}"
-  when: mount.size_available > mount.size_total|float * 0.65
-  with_items:
-    - "{{ ansible_mounts }}"
+- name: Disk usage from command module
+  command: df -h
+  register: space
+
+- debug:
+    var: space.stdout_lines
