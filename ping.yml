@@ -1,6 +1,16 @@
 ---
 - hosts: all
-  gather_facts: no
+  gather_facts: yes
   tasks:
-  - name: ping
+  - name: ping linux hosts
     ping:
+    when: ansible_os_family == "Ubuntu"
+  - name: ping windows hosts
+    win_ping:
+    when: ansible_os_family == "Windows"
+  - name: Run multi-lined shell commands
+    win_shell: |
+      cd $HOME
+      echo $PSVersionTable
+      Get-ChildItem
+    when: ansible_os_family == "Windows"
